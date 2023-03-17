@@ -31,7 +31,6 @@ def get_relevant_pages(q: str, n: int = 1) -> list:
         'num': n,
     }
     response = requests.get(api_url, search_param)
-    print(response.json())
     links = []
     summaries = []
     for item in response.json().get('items', []):

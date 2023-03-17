@@ -48,7 +48,6 @@ class GPT():
             return {}
         return self.complete(prompt, **kwds)
 
-    @MemoryCache.cache
     def complete(self, prompt: str, **kwds):
         req_param = {
             **self.parameters,
@@ -56,7 +55,7 @@ class GPT():
             'max_tokens': self.max_tokens - len(prompt),
             **kwds,
         }
-        response = openai.Completion.create(**req_param)
+        response = request_gpt(**req_param)
 
         answers = []
         for c in response['choices']:
@@ -67,3 +66,7 @@ class GPT():
                     single_answer[kv[0]] = kv[1]
             answers.append(single_answer)
         return answers
+
+@MemoryCache.cache
+def request_gpt(**req_param):
+    return openai.Completion.create(**req_param)

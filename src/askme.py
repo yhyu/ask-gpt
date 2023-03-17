@@ -94,7 +94,7 @@ if __name__ == '__main__':
         help="what do you want to ask?",
     )
     args = parser.parse_args()
-    question = QA(args.question)
+    question = QA(args.question)()
     if hasattr(question, 'answer'):
         print('Answer:', question.answer)
         if hasattr(question, 'reason'):
