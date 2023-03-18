@@ -10,6 +10,7 @@ api_url = os.environ.get(
 api_key = os.environ['SEARCH_ENGINE_API_KEY']
 engine_id = os.environ['SEARCH_ENGINE_ID']
 
+
 def backoff_hdlr(details):
     print("[Search] Backing off {wait:0.1f} seconds after {tries} tries "
           "calling function {target} with args {args} and kwargs "
@@ -34,8 +35,8 @@ def get_relevant_pages(q: str, n: int = 1) -> list:
     links = []
     summaries = []
     for item in response.json().get('items', []):
-        l = item.get('formattedUrl', '')
-        if len(l) > 0:
-            links.append(l)
+        ln = item.get('formattedUrl', '')
+        if len(ln) > 0:
+            links.append(ln)
             summaries.append(item.get('snippet', ''))
     return links, summaries

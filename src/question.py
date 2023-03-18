@@ -20,10 +20,10 @@ class Question(object):
         self.question = question
         self.parameters = {
             'ir_count': 0, 'temperature': 0., 'n': 1,
-            'sub_answers': [], # answer of children's question
+            'sub_answers': [],  # answer of children's question
             **kwargs,
         }
-    
+
     def prompt(self, format: bool = True, include_context: bool = True) -> str:
         output = ''
         context = self.parameters.get('context', [])
@@ -31,7 +31,7 @@ class Question(object):
         mcq = self.parameters.get('mcq', None)
         answer = self.parameters.get('answer', None)
         reason = self.parameters.get('reason', None)
-        
+
         if format:
             output += 'Follow the format below.\n\n'
             output += fmt_context
@@ -45,7 +45,7 @@ class Question(object):
         for ex in examples:
             output += ex.prompt(format=False, include_context=include_context)
             output += fmt_delimiter
-        
+
         if include_context and len(context) > 0:
             output += 'Context:\n'
             for i, c in enumerate(context):
@@ -64,8 +64,8 @@ class Question(object):
         if reason:
             output += f'Reason: {reason}\n'
         return output
-    
-    def add_context(self, new_context, reset = False):
+
+    def add_context(self, new_context, reset: bool = False):
         context = self.parameters.get('context', [])
         if reset:
             context = []
@@ -80,7 +80,7 @@ class Question(object):
     def increase_ir(self):
         self.ir_count += 1
         return self.ir_count
-    
+
     def __setattr__(self, __name: str, __value) -> None:
         if __name == 'parameters' or __name == 'question':
             super().__setattr__(__name, __value)

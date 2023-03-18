@@ -7,7 +7,7 @@ sample_questions = [
     Question(
         question='What city is that 1st company John founded?',
         context=['John worked for TrendMicro before 2009, and then started his business.'],
-        sub_answers = ['What name is the 1st company that John founded? Ling Xiao'],
+        sub_answers=['What name is the 1st company that John founded? Ling Xiao'],
         mcq=2, answer='Where is Ling Xiao located?',
     ),
     Question(
@@ -19,6 +19,7 @@ sample_questions = [
         mcq=2, answer="What is the name of Gary Zukav's first book?",
     ),
 ]
+
 
 def get_samples(q, n=5, method='random'):
     # TODO: add other sample strategies, e.g., knn, crossval according to q

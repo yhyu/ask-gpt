@@ -1,10 +1,12 @@
+import argparse
 from question import Question
 from question_sample import get_samples
 from gpt import GPT
 from ir import IR
 
+
 class QA():
-    def __init__(self, q: str, depth: int = 0, model = GPT(), verbose: int = 1) -> None:
+    def __init__(self, q: str, depth: int = 0, model=GPT(), verbose: bool = False) -> None:
         self.question = Question(
             question=q,
             examples=get_samples(q),
@@ -15,7 +17,7 @@ class QA():
         self.depth = depth
         self.verbose = verbose
 
-    def __call__(self, max_iter=5, max_child_iters=2, max_depth=3, top_at_dup=True):
+    def __call__(self, max_iter=5, max_child_iters=2, max_depth=3):
         history = set([self.question.question])
         for i in range(max_iter):
             lm_response = self.model(
@@ -60,19 +62,20 @@ class QA():
                     self.question.n += 3
                     continue
                 history.add(intermediate_q)
-                intermediate_question = QA(q=intermediate_q, depth=self.depth+1)(
-                    max_iter=max_child_iters, max_child_iters=max_child_iters)
+                intermediate_question = QA(
+                    q=intermediate_q, depth=self.depth+1, verbose=self.verbose
+                )(max_iter=max_child_iters, max_child_iters=max_child_iters)
                 self.question.sub_answers.extend(intermediate_question.sub_answers)
                 if hasattr(intermediate_question, 'answer'):
                     output = f'{intermediate_q} {intermediate_question.answer}'
                     sub_answer = output
                     if hasattr(intermediate_question, 'reason'):
-                        output += f' {intermediate_question.reason}'
+                        output += f' ({intermediate_question.reason})'
                         # sub_answer += output
                     self.question.sub_answers.append(sub_answer)
-                    if self.verbose > 0:
+                    if self.verbose:
                         print(output)
-                else: # no answer
+                else:  # no answer
                     # TODO: ask another question
                     self.question.temperature = 0.7
                     self.question.n += 2
@@ -81,7 +84,6 @@ class QA():
         return self.question
 
 
-import argparse
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description="ask gpt"
@@ -93,8 +95,14 @@ if __name__ == '__main__':
         required=True,
         help="what do you want to ask?",
     )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="print out every steps"
+    )
     args = parser.parse_args()
-    question = QA(args.question)()
+    question = QA(args.question, verbose=args.verbose)()
     if hasattr(question, 'answer'):
         print('Answer:', question.answer)
         if hasattr(question, 'reason'):

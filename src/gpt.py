@@ -7,6 +7,7 @@ from local_cache import MemoryCache
 default_openai_model = os.environ.get('LLM_COMPLETION_MODEL', 'text-davinci-003')
 default_openai_api_key = os.environ['OPENAI_API_KEY']
 
+
 # Referenced from https://pypi.org/project/backoff/
 def backoff_hdlr(details):
     print("[GPT] Backing off {wait:0.1f} seconds after {tries} tries "
@@ -18,8 +19,7 @@ class GPT():
     def __init__(
             self, model: str = default_openai_model,
             api_key: str = default_openai_api_key,
-            max_tokens: int = 4096,
-        ) -> None:
+            max_tokens: int = 4096) -> None:
         if api_key:
             openai.api_key = api_key
 
@@ -29,7 +29,7 @@ class GPT():
             'model': model,
             'temperature': 0.,
             'top_p': 1,
-            'max_tokens': 1024, # prompt + completion <= 4096
+            'max_tokens': 1024,  # prompt + completion <= 4096
             'n': 1,
             'frequency_penalty': 0,
             'presence_penalty': 0,
@@ -66,6 +66,7 @@ class GPT():
                     single_answer[kv[0]] = kv[1]
             answers.append(single_answer)
         return answers
+
 
 @MemoryCache.cache
 def request_gpt(**req_param):

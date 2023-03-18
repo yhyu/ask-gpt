@@ -5,6 +5,7 @@ import backoff
 
 wiki_endpoint = '/w/api.php'
 
+
 # Referenced from https://pypi.org/project/backoff/
 def backoff_hdlr(details):
     print("[Wiki] Backing off {wait:0.1f} seconds after {tries} tries "

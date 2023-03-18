@@ -1,6 +1,7 @@
 from gsearch import get_relevant_pages
 from wiki import get_abstract
 
+
 class IR():
     def __init__(self) -> None:
         pass
@@ -10,7 +11,7 @@ class IR():
 
     def retrieve_from_web(
             self, q: str, n: int = 1,
-            buf_size: int=10, # prefatch googlw search and cached to save search quota
+            buf_size: int = 10,  # prefatch googlw search and cached to save search quota
             summary_only: bool = True) -> list:
         results = []
         links, summaries = get_relevant_pages(q=q, n=buf_size)
