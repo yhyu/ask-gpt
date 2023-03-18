@@ -48,6 +48,7 @@ class QA():
                 self.question.answer = answers[0]
                 if len(reason) > 0:
                     self.question.reason = reason
+                    output += f' ({self.question.reason})'
                 break
             elif mcq == 2:
                 if self.depth >= max_depth:
@@ -74,7 +75,7 @@ class QA():
                         # sub_answer += output
                     self.question.sub_answers.append(sub_answer)
                     if self.verbose:
-                        print(output)
+                        print(f'«{output}»')
                 else:  # no answer
                     # TODO: ask another question
                     self.question.temperature = 0.7
