@@ -4,7 +4,7 @@ import openai.error
 import backoff
 from local_cache import MemoryCache
 
-default_openai_model = 'text-davinci-003'
+default_openai_model = os.environ.get('LLM_COMPLETION_MODEL', 'text-davinci-003')
 default_openai_api_key = os.environ['OPENAI_API_KEY']
 
 # Referenced from https://pypi.org/project/backoff/
