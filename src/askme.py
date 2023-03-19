@@ -48,7 +48,6 @@ class QA():
                 self.question.answer = answers[0]
                 if len(reason) > 0:
                     self.question.reason = reason
-                    output += f' ({self.question.reason})'
                 break
             elif mcq == 2:
                 if self.depth >= max_depth:
@@ -108,3 +107,5 @@ if __name__ == '__main__':
         print('Answer:', question.answer)
         if hasattr(question, 'reason'):
             print('Reason:', question.reason)
+    else:
+        print('No answer.')
