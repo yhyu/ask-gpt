@@ -1,24 +1,25 @@
+import json
 import random
 
 from question import Question
 
+
+def load_training_data(data_path: str):
+    training_data = []
+    with open(data_path, 'rb') as f:
+        data = json.load(f)
+        for sample in data.get('samples', {}):
+            if 'question' not in sample:
+                continue
+            question = sample.pop('question')
+            training_data.append(
+                Question(question, **sample)
+            )
+    return training_data
+
+
 # TODO: sample from database
-sample_questions = [
-    Question(
-        question='What city is that 1st company John founded?',
-        context=['John worked for TrendMicro before 2009, and then started his business.'],
-        sub_answers=['What name is the 1st company that John founded? Ling Xiao'],
-        mcq=2, answer='Where is Ling Xiao located?',
-    ),
-    Question(
-        question='Who invented the lightbulb?',
-        mcq=1, answer='Thomas Edison', reason='Thomas Edison invented the lightbulb.'
-    ),
-    Question(
-        question='Which award did the first book of Gary Zukav receive?',
-        mcq=2, answer="What is the name of Gary Zukav's first book?",
-    ),
-]
+sample_questions = load_training_data('../data/train.json')
 
 
 def get_samples(q, n=5, method='random'):
