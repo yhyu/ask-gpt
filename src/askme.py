@@ -17,7 +17,7 @@ class QA():
         self.depth = depth
         self.verbose = verbose
 
-    def __call__(self, max_iter=5, max_child_iters=2, max_depth=3):
+    def __call__(self, max_iter=3, max_child_iters=2, max_depth=3):
         history = set([self.question.question])
         for i in range(max_iter):
             lm_response = self.model(
@@ -52,6 +52,8 @@ class QA():
             elif mcq == 2:
                 if self.depth >= max_depth:
                     break
+                if i >= (max_iter-1):
+                    break # last iter cannot be asking other question
                 intermediate_q = ''
                 for ans in answers:
                     if ans not in history:
